@@ -1,0 +1,1 @@
+Practice project next.js, mongo DB and Go Langcd fr
