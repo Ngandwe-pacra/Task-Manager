@@ -3,9 +3,15 @@
 import { useState } from "react";
 import { initialTasks } from "@/data/tasks";
 import TaskCard from "@/components/TaskCard";
+import TaskForm from "@/components/TaskForm";
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState(initialTasks);
+
+  function addTask(title) {
+    const newTask = { id: Date.now(), title, done: false };
+    setTasks([newTask, ...tasks]);
+  }
 
   function toggleTask(id) {
     setTasks(tasks.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));
@@ -18,6 +24,7 @@ export default function TasksPage() {
   return (
     <div className="max-w-xl mx-auto px-8 py-12">
       <h1 className="text-2xl font-bold mb-6">Tasks</h1>
+      <TaskForm onAdd={addTask} />
       <div className="flex flex-col gap-3">
         {tasks.map((task) => (
           <TaskCard
