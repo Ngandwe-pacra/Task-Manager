@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Button({ href, children, ...props }) {
   const classes =
-    "inline-block px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition";
+  "inline-block px-7 py-3.5 bg-white text-black rounded-xl font-semibold shadow-lg hover:bg-gray-200 hover:scale-105 transition-all duration-200";
 
   if (href) {
     return (
