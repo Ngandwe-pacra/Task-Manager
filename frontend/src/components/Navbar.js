@@ -24,6 +24,13 @@ export default function Navbar() {
         >
           Dashboard
         </Link>
+
+        <Link
+          href="/sarah"
+          className="px-4 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200"
+        >
+          Sarah
+        </Link>
       </div>
     </nav>
   );
