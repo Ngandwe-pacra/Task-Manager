@@ -22,6 +22,7 @@ export default function Navbar() {
 
         {/* Navigation Links */}
         <div className="flex items-center gap-2 sm:gap-4">
+          
           <Link
             href="/tasks"
             className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
@@ -35,6 +36,14 @@ export default function Navbar() {
           >
             Dashboard
           </Link>
+
+          <Link
+            href="/about"
+            className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+          >
+            About
+          </Link>
+
         </div>
       </div>
     </nav>

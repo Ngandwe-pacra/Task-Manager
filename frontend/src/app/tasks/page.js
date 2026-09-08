@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -22,18 +23,22 @@ export default function TasksPage() {
   }
 
   return (
-    <div className="max-w-xl mx-auto px-8 py-12">
-      <h1 className="text-2xl font-bold mb-6">Tasks</h1>
-      <TaskForm onAdd={addTask} />
-      <div className="flex flex-col gap-3">
-        {tasks.map((task) => (
-          <TaskCard
-            key={task.id}
-            task={task}
-            onToggle={toggleTask}
-            onDelete={deleteTask}
-          />
-        ))}
+    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-blue-100">
+      <div className="max-w-xl mx-auto px-8 py-12">
+        <h1 className="text-2xl font-bold mb-6 text-blue-950">Tasks</h1>
+
+        <TaskForm onAdd={addTask} />
+
+        <div className="flex flex-col gap-3 mt-6">
+          {tasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              onToggle={toggleTask}
+              onDelete={deleteTask}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
