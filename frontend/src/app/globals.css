@@ -1,26 +1,371 @@
 @import "tailwindcss";
 
+/* Light mode is opt-in via a `.light` class on <html>. Dark is the default look. */
+@custom-variant light (&:where(.light, .light *));
+
+/* ============================================================
+   DESIGN TOKENS
+   Every colour in the app comes from here. Change a value once
+   and the whole product follows. Never hard-code a hex in JSX.
+   ============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+
+  /* Surfaces, from furthest back to closest to the user */
+  --bg: #08080c;
+  --bg-elev: #0b0b11;
+  --surface: #101017;
+  --surface-2: #16161f;
+  --surface-3: #1e1e2a;
+
+  /* Lines */
+  --border: rgb(255 255 255 / 0.08);
+  --border-strong: rgb(255 255 255 / 0.16);
+  --grid-line: rgb(255 255 255 / 0.035);
+
+  /* Text, from loudest to quietest */
+  --fg: #f5f5f7;
+  --muted: #a2a2b3;
+  --faint: #6b6b7c;
+
+  /* Brand */
+  --accent: #8b5cf6;
+  --accent-2: #6366f1;
+  --accent-3: #d946ef;
+  --accent-fg: #ffffff;
+  --accent-soft: rgb(139 92 246 / 0.14);
+  --accent-line: rgb(139 92 246 / 0.32);
+
+  /* Semantic */
+  --success: #34d399;
+  --success-soft: rgb(52 211 153 / 0.13);
+  --warn: #fbbf24;
+  --warn-soft: rgb(251 191 36 / 0.13);
+  --danger: #fb7185;
+  --danger-soft: rgb(251 113 133 / 0.13);
+
+  /* Depth */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 8px 24px -10px rgb(0 0 0 / 0.6);
+  --shadow-lg: 0 32px 70px -24px rgb(0 0 0 / 0.75), 0 10px 24px -14px rgb(0 0 0 / 0.5);
+  --shadow-glow: 0 0 0 1px var(--accent-line), 0 18px 50px -18px rgb(139 92 246 / 0.5);
+
+  /* Aurora wash strength — dialled down in light mode */
+  --aurora-1: rgb(139 92 246 / 0.24);
+  --aurora-2: rgb(217 70 239 / 0.16);
+  --aurora-3: rgb(99 102 241 / 0.16);
+  --noise-opacity: 0.035;
 }
 
+.light {
+  color-scheme: light;
+
+  --bg: #fbfbfd;
+  --bg-elev: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f5f5f8;
+  --surface-3: #ebebf1;
+
+  --border: rgb(9 9 18 / 0.09);
+  --border-strong: rgb(9 9 18 / 0.18);
+  --grid-line: rgb(9 9 18 / 0.045);
+
+  --fg: #0a0a12;
+  --muted: #55556a;
+  --faint: #86869a;
+
+  --accent: #7c3aed;
+  --accent-2: #4f46e5;
+  --accent-3: #c026d3;
+  --accent-fg: #ffffff;
+  --accent-soft: rgb(124 58 237 / 0.09);
+  --accent-line: rgb(124 58 237 / 0.24);
+
+  --success: #059669;
+  --success-soft: rgb(5 150 105 / 0.1);
+  --warn: #b45309;
+  --warn-soft: rgb(180 83 9 / 0.1);
+  --danger: #dc2626;
+  --danger-soft: rgb(220 38 38 / 0.09);
+
+  --shadow-sm: 0 1px 2px rgb(9 9 18 / 0.06);
+  --shadow-md: 0 8px 24px -12px rgb(9 9 18 / 0.14);
+  --shadow-lg: 0 32px 70px -28px rgb(9 9 18 / 0.2), 0 8px 20px -12px rgb(9 9 18 / 0.08);
+  --shadow-glow: 0 0 0 1px var(--accent-line), 0 18px 50px -20px rgb(124 58 237 / 0.28);
+
+  --aurora-1: rgb(124 58 237 / 0.12);
+  --aurora-2: rgb(192 38 211 / 0.08);
+  --aurora-3: rgb(79 70 229 / 0.09);
+  --noise-opacity: 0.02;
+}
+
+/* ============================================================
+   TAILWIND THEME
+   `inline` means the utilities emit `var(--token)` rather than a
+   frozen value, so `bg-surface` re-themes itself when `.light`
+   flips the variables above. No `dark:` prefixes needed anywhere.
+   ============================================================ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-elev: var(--bg-elev);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-line: var(--accent-line);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", monospace;
+  --font-display: var(--font-instrument), Georgia, "Times New Roman", serif;
+
+  /* The built-in CSS easings are too weak to read as intentional. */
+  --ease-snap: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-smooth: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --shadow-card: var(--shadow-md);
+  --shadow-float: var(--shadow-lg);
+  --shadow-brand: var(--shadow-glow);
+
+  --animate-fade-up: fade-up 0.55s var(--ease-snap) both;
+  --animate-fade-in: fade-in 0.4s var(--ease-snap) both;
+  --animate-scale-in: scale-in 0.22s var(--ease-snap) both;
+  --animate-drift: drift 22s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-pulse-ring: pulse-ring 2.6s var(--ease-snap) infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  /* Tailwind v4 defaults border-color to currentColor, which makes a
+     bare `border` inherit the text colour. Restore a sane default. */
+  *,
+  ::after,
+  ::before {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: var(--surface-3) transparent;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--accent-fg);
+  }
+
+  /* One focus treatment for the entire app. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--surface-3);
+    border: 2px solid var(--bg);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--border-strong);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes fade-up {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Never animate in from scale(0) — nothing appears out of nothing. */
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%      { transform: translate3d(3%, -4%, 0) scale(1.06); }
+  66%      { transform: translate3d(-3%, 3%, 0) scale(0.97); }
+}
+
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+@keyframes pulse-ring {
+  0%       { box-shadow: 0 0 0 0 var(--accent-line); }
+  70%, 100% { box-shadow: 0 0 0 12px transparent; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ============================================================
+   COMPOSITES
+   Only things that are genuinely awkward as utilities live here.
+   ============================================================ */
+
+/* Soft brand wash. Radial gradients instead of a blurred blob —
+   same look, none of the filter cost. */
+.aurora {
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 78vh;
+  pointer-events: none;
+  background:
+    radial-gradient(46% 42% at 18% 18%, var(--aurora-1), transparent 68%),
+    radial-gradient(40% 38% at 82% 8%, var(--aurora-2), transparent 68%),
+    radial-gradient(56% 48% at 52% 46%, var(--aurora-3), transparent 70%);
+}
+
+.aurora-sm {
+  height: 46vh;
+}
+
+/* Faint blueprint grid that dissolves as it falls down the page. */
+.grid-fade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 68px 68px;
+  mask-image: radial-gradient(120% 78% at 50% 0%, #000 12%, transparent 72%);
+  -webkit-mask-image: radial-gradient(120% 78% at 50% 0%, #000 12%, transparent 72%);
+}
+
+/* Film grain. Kills the "flat CSS gradient" tell on large dark areas. */
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--noise-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.text-gradient {
+  background-image: linear-gradient(102deg, var(--accent-3), var(--accent) 42%, var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* Gradient text clips descenders without a little breathing room. */
+  padding-bottom: 0.08em;
+}
+
+/* 1px highlight along the top edge — reads as light catching a bevel. */
+.hairline::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-strong) 22%, var(--border-strong) 78%, transparent);
+}
+
+.marquee-track {
+  animation: marquee 42s linear infinite;
+}
+
+/* The navbar is sticky, so it takes 4rem of normal flow and the page
+   below it starts at 4rem. This pulls a first section back up under the
+   navbar and pads the content straight back down, so the section's
+   background bleeds to the very top of the viewport while nothing moves. */
+.bleed-top {
+  margin-top: -4rem;
+  padding-top: 4rem;
+}
+
+/* Scroll reveal. Starts hidden, gets `data-visible` from an observer. */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 0.6s var(--ease-snap),
+    transform 0.6s var(--ease-snap);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* ============================================================
+   ACCESSIBILITY
+   Reduced motion means gentler, not none: opacity still carries
+   meaning, movement is what causes trouble.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
