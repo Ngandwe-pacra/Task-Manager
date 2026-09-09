@@ -15,6 +15,7 @@ export default function Home() {
           <h3 className="font-semibold mb-2">Simple</h3>
           <p className="text-sm text-gray-500">Add a task in seconds, no clutter.</p>
         </div>
+        
         <div>
           <h3 className="font-semibold mb-2">Organized</h3>
           <p className="text-sm text-gray-500">See everything in one clear list.</p>
